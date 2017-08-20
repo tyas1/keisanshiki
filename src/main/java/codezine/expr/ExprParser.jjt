@@ -1,0 +1,181 @@
+// ----- オプション定義 -----
+options
+{
+  STATIC = false;
+  MULTI = true;
+  VISITOR = true;
+  NODE_EXTENDS = "codezine.expr.BaseNode";
+  UNICODE_INPUT = true;
+}
+
+// ----- パーサークラスの定義 -----
+PARSER_BEGIN(ExprParser)
+package codezine.expr.parser;
+
+public class ExprParser
+{
+}
+
+PARSER_END(ExprParser)
+
+// ========== トークンの定義 ==========
+
+// ----- ホワイトスペース -----
+SKIP :
+{
+	  " "
+	| "\t"
+	| "\n"
+	| "\r"
+	| "\f"
+}
+
+// ----- コメント -----
+MORE :
+{
+  <"/**" ~["/"]> { input_stream.backup(1); } : IN_FORMAL_COMMENT
+|
+  "/*" : IN_MULTI_LINE_COMMENT
+}
+
+SPECIAL_TOKEN :
+{
+  <SINGLE_LINE_COMMENT: "//" (~["\n", "\r"])* ("\n" | "\r" | "\r\n")?>
+}
+
+<IN_FORMAL_COMMENT>
+SPECIAL_TOKEN :
+{
+  <FORMAL_COMMENT: "*/" > : DEFAULT
+}
+
+<IN_MULTI_LINE_COMMENT>
+SPECIAL_TOKEN :
+{
+  <MULTI_LINE_COMMENT: "*/" > : DEFAULT
+}
+
+<IN_FORMAL_COMMENT,IN_MULTI_LINE_COMMENT>
+MORE :
+{
+  < ~[] >
+}
+
+TOKEN :
+{
+	  < PLUS : "+" >
+	| < MINUS : "-" >
+	| < MUL : "*" >
+	| < DIV : "/" >
+	| < LPAREN : "(" >
+	| < RPAREN : ")" >
+	| < INTEGER : ([ "0"-"9" ])+ >
+}
+
+//文字列
+TOKEN :
+{
+  < STR_START : "\"" > : IN_STR
+}
+
+< IN_STR >
+MORE :
+{
+  < ~[ "\"", "\\", "\n", "\r", "\t" ] >
+| < "\\\""
+  | "\\\\" >
+  {
+    image.deleteCharAt(image.length() - 2);
+  }
+| < "\\n"
+  | "\\r" >
+  {
+    image.delete(image.length() - 2, image.length());
+    image.append("\n");
+  }
+| < "\\t" >
+  {
+    image.delete(image.length() - 2, image.length());
+    image.append("\t");
+  }
+}
+
+< IN_STR >
+TOKEN :
+{
+  < STR : "\"" >
+  {
+    image.deleteCharAt(image.length() - 1);
+    matchedToken.image = image.toString();
+  }
+  : DEFAULT
+}
+
+// ========== 文法の定義 ==========
+ASTStart Start() :
+{}
+{
+  AddExpr()
+    {
+      return jjtThis;
+    }
+}
+
+void AddExpr() #void :
+{}
+{
+  MulExpr()
+  (
+    < PLUS > MulExpr() #Add(2)
+| < MINUS > MulExpr() #Sub(2)
+)*
+}
+
+void MulExpr() #void :
+{}
+{
+  Value()
+  (
+    < MUL > Value() #Multi(2)
+| < DIV > Value() #Division(2)
+)*
+}
+
+void Value() #void :
+{}
+{
+  Integer()
+| < LPAREN > AddExpr() < RPAREN >
+| String()
+}
+
+void String() :
+{
+  Token t;
+}
+{
+  < STR_START > 
+  t = < STR >
+  {
+    jjtThis.nodeValue = t.image;
+  }
+}
+
+void Integer() :
+{
+  Token t;
+}
+{
+  t = < INTEGER >
+  {
+    jjtThis.nodeValue = t.image;
+  }
+}
+
+//void Comment() :
+//{}
+//{
+//  < SINGLE_LINE_COMMENT>
+//| < FORMAL_COMMENT>
+//| < MULTI_LINE_COMMENT>
+//}
