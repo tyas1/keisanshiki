@@ -1,0 +1,5 @@
+/build/
+.classpath
+*.DS_STore
+.project
+/.settings/
