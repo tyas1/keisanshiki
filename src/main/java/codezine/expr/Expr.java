@@ -60,10 +60,10 @@ public class Expr implements ExprParserVisitor {
 	/** 引き算 */
 	@Override
 	public Object visit(ASTSub node, Object data) {
-		Integer left = (Integer) node.jjtGetChild(0).jjtAccept(this, null);
-		Integer right = (Integer) node.jjtGetChild(1).jjtAccept(this, null);
+		Object left = node.jjtGetChild(0).jjtAccept(this, null);
+		Object right = node.jjtGetChild(1).jjtAccept(this, null);
 
-		return left - right;
+		return ((BigDecimal) left).subtract((BigDecimal)right);
 	}
 
 	/** 掛け算 */
@@ -90,11 +90,14 @@ public class Expr implements ExprParserVisitor {
 //		return node.nodeValue;
 //	}
 
-	/** 数値リテラル */
+	/** リテラル */
 	@Override
 	public Object visit(ASTString node, Object data) {
 		String value = node.nodeValue;
-		BigDecimal bd = new BigDecimal(value);
-		return bd;
+		try{
+			return new BigDecimal(value);
+		}catch (NumberFormatException e) {
+		}
+		return value;
 	}
 }
