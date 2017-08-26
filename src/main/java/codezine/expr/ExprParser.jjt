@@ -69,7 +69,19 @@ TOKEN :
 	| < DIV : "/" >
 	| < LPAREN : "(" >
 	| < RPAREN : ")" >
-	| < INTEGER : ([ "0"-"9" ])+ >
+//	| < INTEGER : ([ "0"-"9" ])+ >
+//	|  < STRING_LITERAL:
+//      "\""
+//      (   (~["\"","\\","\n","\r"])
+//        | ("\\"
+//            ( ["n","t","b","r","f","\\","'","\""]
+//            | ["0"-"7"] ( ["0"-"7"] )?
+//            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+//            )
+//          )
+//      )*
+//      "\""
+//  	>
 }
 
 //文字列
@@ -144,9 +156,9 @@ void MulExpr() #void :
 void Value() #void :
 {}
 {
-  Integer()
+  String()
 | < LPAREN > AddExpr() < RPAREN >
-| String()
+//| String()
 }
 
 void String() :
@@ -161,21 +173,13 @@ void String() :
   }
 }
 
-void Integer() :
-{
-  Token t;
-}
-{
-  t = < INTEGER >
-  {
-    jjtThis.nodeValue = t.image;
-  }
-}
-
-//void Comment() :
-//{}
+//void StringLiteral() :
 //{
-//  < SINGLE_LINE_COMMENT>
-//| < FORMAL_COMMENT>
-//| < MULTI_LINE_COMMENT>
+//  Token t;
+//}
+//{
+//  t = < STRING_LITERAL >
+//  {
+//    jjtThis.nodeValue = t.image;
+//  }
 //}

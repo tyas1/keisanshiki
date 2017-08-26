@@ -197,18 +197,14 @@ if (jjtc002) {
 
   final public void Value() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case INTEGER:{
-      Integer();
+    case STR_START:{
+      String();
       break;
       }
     case LPAREN:{
       jj_consume_token(LPAREN);
       AddExpr();
       jj_consume_token(RPAREN);
-      break;
-      }
-    case STR_START:{
-      String();
       break;
       }
     default:
@@ -235,22 +231,6 @@ if (jjtc000) {
     }
   }
 
-  final public void Integer() throws ParseException {/*@bgen(jjtree) Integer */
-  ASTInteger jjtn000 = new ASTInteger(JJTINTEGER);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);Token t;
-    try {
-      t = jj_consume_token(INTEGER);
-jjtree.closeNodeScope(jjtn000, true);
-    jjtc000 = false;
-jjtn000.nodeValue = t.image;
-    } finally {
-if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-    }
-  }
-
   /** Generated Token Manager. */
   public ExprParserTokenManager token_source;
   SimpleCharStream jj_input_stream;
@@ -266,7 +246,7 @@ if (jjtc000) {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x3000,0x3000,0xc000,0xc000,0xd0000,};
+      jj_la1_0 = new int[] {0x3000,0x3000,0xc000,0xc000,0x50000,};
    }
 
   /** Constructor with InputStream. */
@@ -386,7 +366,7 @@ if (jjtc000) {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[25];
+    boolean[] la1tokens = new boolean[24];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -400,7 +380,7 @@ if (jjtc000) {
         }
       }
     }
-    for (int i = 0; i < 25; i++) {
+    for (int i = 0; i < 24; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

@@ -29,11 +29,9 @@ public interface ExprParserConstants {
   /** RegularExpression Id. */
   int RPAREN = 17;
   /** RegularExpression Id. */
-  int INTEGER = 18;
+  int STR_START = 18;
   /** RegularExpression Id. */
-  int STR_START = 19;
-  /** RegularExpression Id. */
-  int STR = 24;
+  int STR = 23;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -64,11 +62,10 @@ public interface ExprParserConstants {
     "\"/\"",
     "\"(\"",
     "\")\"",
-    "<INTEGER>",
     "\"\\\"\"",
+    "<token of kind 19>",
     "<token of kind 20>",
     "<token of kind 21>",
-    "<token of kind 22>",
     "\"\\\\t\"",
     "\"\\\"\"",
   };

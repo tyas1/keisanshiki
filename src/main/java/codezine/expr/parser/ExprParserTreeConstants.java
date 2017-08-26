@@ -10,7 +10,6 @@ public interface ExprParserTreeConstants
   public int JJTMULTI = 4;
   public int JJTDIVISION = 5;
   public int JJTSTRING = 6;
-  public int JJTINTEGER = 7;
 
 
   public String[] jjtNodeName = {
@@ -21,7 +20,6 @@ public interface ExprParserTreeConstants
     "Multi",
     "Division",
     "String",
-    "Integer",
   };
 }
-/* JavaCC - OriginalChecksum=2632d0c69068edcf823f103d76e91d31 (do not edit this line) */
+/* JavaCC - OriginalChecksum=3b3757bf8e3c2909fa83967b5f636b26 (do not edit this line) */

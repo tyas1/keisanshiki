@@ -1,8 +1,9 @@
 package codezine.expr;
 
+import java.math.BigDecimal;
+
 import codezine.expr.parser.ASTAdd;
 import codezine.expr.parser.ASTDivision;
-import codezine.expr.parser.ASTInteger;
 import codezine.expr.parser.ASTMulti;
 import codezine.expr.parser.ASTStart;
 import codezine.expr.parser.ASTString;
@@ -53,7 +54,7 @@ public class Expr implements ExprParserVisitor {
 			return left.toString() + right.toString();
 		}
 
-		return (Integer) left + (Integer) right;
+		return ((BigDecimal) left).add((BigDecimal)right);
 	}
 
 	/** 引き算 */
@@ -84,15 +85,16 @@ public class Expr implements ExprParserVisitor {
 	}
 
 	/** 文字列リテラル */
-	@Override
-	public Object visit(ASTString node, Object data) {
-		return node.nodeValue;
-	}
+//	@Override
+//	public Object visit(ASTString node, Object data) {
+//		return node.nodeValue;
+//	}
 
 	/** 数値リテラル */
 	@Override
-	public Object visit(ASTInteger node, Object data) {
+	public Object visit(ASTString node, Object data) {
 		String value = node.nodeValue;
-		return Integer.valueOf(value);
+		BigDecimal bd = new BigDecimal(value);
+		return bd;
 	}
 }
