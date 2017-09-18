@@ -69,10 +69,10 @@ public class Expr implements ExprParserVisitor {
 	/** 掛け算 */
 	@Override
 	public Object visit(ASTMulti node, Object data) {
-		Integer left = (Integer) node.jjtGetChild(0).jjtAccept(this, null);
-		Integer right = (Integer) node.jjtGetChild(1).jjtAccept(this, null);
+		Object left = node.jjtGetChild(0).jjtAccept(this, null);
+		Object right = node.jjtGetChild(1).jjtAccept(this, null);
 
-		return left * right;
+		return ((BigDecimal)left).multiply((BigDecimal)right);
 	}
 
 	/** 割り算 */

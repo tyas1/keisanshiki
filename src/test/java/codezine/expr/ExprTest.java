@@ -119,6 +119,17 @@ public class ExprTest {
 		Assert.assertTrue(ret instanceof String);
 		Assert.assertEquals("あああ", ret);
 	}
+
+	// ========== 掛け算 ==========
+
+	@Test
+	public void keisanMultiple01() throws IOException, ParseException, URISyntaxException {
+		Object ret = commonProc("keisan_mul_01.txt");
+		Assert.assertTrue(ret instanceof BigDecimal);
+		Assert.assertTrue(new BigDecimal(6).compareTo((BigDecimal)ret) == 0);
+	}
+	
+	// =========== 共通処理  ==========
 	
 	/**
 	 * 共通テスト処理
